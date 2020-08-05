@@ -303,7 +303,7 @@ for (let i = 0; i < CARD_EXTRA_BLOCK_COUNT; i++) {
 
   cardExtraTitle.textContent = CARD_EXTRA_TITLES[i];
 
-  for (let i = 0; i < CARD_EXTRA_COUNT; i++) {
+  for (let j = 0; j < CARD_EXTRA_COUNT; j++) {
     render(cardExtraContainerElement, createCardTemplate(), `beforeend`);
   }
 }
