@@ -1,7 +1,4 @@
-import {getRandomInteger} from "../utils.js";
-import {getRandomNumber} from "../utils.js";
-import {shuffleArray} from "../utils.js";
-import {getRandomItem} from "../utils.js";
+import {getRandomInteger, getRandomNumber, shuffleArray, getRandomItem, uniqueNumber} from "../utils.js";
 
 const MIN_RATING = 0;
 const MAX_RATING = 10;
@@ -108,6 +105,8 @@ const generateComments = () => {
   };
 };
 
+const getId = uniqueNumber();
+
 export const generateCard = () => {
   return {
     poster: `./images/posters/${getRandomItem(posters)}`,
@@ -125,5 +124,6 @@ export const generateCard = () => {
     actors: getRandomItem(actors),
     country: getRandomItem(countries),
     comments: groupComments(generateComments, getRandomInteger(MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT)),
+    id: getId(),
   };
 };
