@@ -1,5 +1,6 @@
-import {getCommentDate} from "../utils.js";
-export const createFilmCommentTemplate = (card) => {
+import {getCommentDate, createElement} from "../utils.js";
+
+const createCardCommentTemplate = (card) => {
   const {text, author, date, emoji} = card;
 
   const commentDate = date !== null
@@ -20,3 +21,22 @@ export const createFilmCommentTemplate = (card) => {
   </div>
 </li>`;
 };
+
+export default class CardComment {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+  getTemplate() {
+    return createCardCommentTemplate(this._card);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

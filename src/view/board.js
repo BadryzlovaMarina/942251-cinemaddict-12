@@ -1,23 +1,28 @@
 import {createElement} from "../utils.js";
 
-const createGenreTemplate = (genres) => {
-  return `<span class="film-details__genre">${genres}</span>`;
+const createBoardTemplate = () => {
+  return (
+    `<section class="films"></section>`
+  );
 };
 
-export default class CardGenre {
-  constructor(genres) {
-    this._genres = genres;
+export default class Board {
+  constructor() {
     this._element = null;
   }
+
   getTemplate() {
-    return createGenreTemplate(this._genres);
+    return createBoardTemplate();
   }
+
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
+
     return this._element;
   }
+
   removeElement() {
     this._element = null;
   }

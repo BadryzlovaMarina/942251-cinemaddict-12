@@ -1,5 +1,7 @@
-export const createFilmDetailsTemplate = (card) => {
-  const {poster, title, rating, director, writers, actors, release, runTime, country, genre, description, comments, isWatchlist, isHistory, isFavorite} = card;
+import {createElement} from "../utils.js";
+
+const createCardDetailsTemplate = (card) => {
+  const {poster, title, rating, director, writers, actors, release, runTime, country, genre, description, comments, isWatchlist, isHistory, isFavorite, id} = card;
 
   const watchlistClassName = isWatchlist
     ? `checked`
@@ -14,7 +16,7 @@ export const createFilmDetailsTemplate = (card) => {
     : ``;
 
   return (
-    `<section class="film-details">
+    `<section class="film-details" data-id="${id}">
       <form class="film-details__inner" action="" method="get">
         <div class="form-details__top-container">
           <div class="film-details__close">
@@ -63,6 +65,10 @@ export const createFilmDetailsTemplate = (card) => {
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
                   <td class="film-details__cell">${country}</td>
+                </tr>
+                <tr class="film-details__row">
+                  <td class="film-details__term">${genre.title}</td>
+                  <td class="film-details__cell"></td>
                 </tr>
               </table>
 
@@ -125,3 +131,26 @@ export const createFilmDetailsTemplate = (card) => {
     </section>`
   );
 };
+
+export default class CardDetails {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardDetailsTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
