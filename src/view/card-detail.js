@@ -1,8 +1,10 @@
 import AbstractView from "./abstract.js";
+import CardCommentView from "../view/comment.js";
+import CardGenreView from "../view/genre.js";
+import {RenderPosition, render, createElement} from "../utils/render.js";
 
-const createCardDetailsTemplate = (card) => {
-  const {poster, title, rating, director, writers, actors, release, runTime, country, genre, description, comments, isWatchlist, isHistory, isFavorite, id} = card;
-
+const createCardDetailsTemplate = (data) => {
+  const {poster, title, rating, director, writers, actors, release, runTime, country, genre, description, comments, isWatchlist, isHistory, isFavorite, id} = data;
   const watchlistClassName = isWatchlist
     ? `checked`
     : ``;
@@ -94,7 +96,9 @@ const createCardDetailsTemplate = (card) => {
           <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
-            <ul class="film-details__comments-list"></ul>
+            <ul class="film-details__comments-list">
+
+            </ul>
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label"></div>
@@ -133,12 +137,63 @@ const createCardDetailsTemplate = (card) => {
 };
 
 export default class CardDetails extends AbstractView {
-  constructor(card) {
+  constructor(data) {
     super();
-    this._card = card;
+    this._data = data;
+    this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
+    this._keyDownHandler = this._keyDownHandler.bind(this);
   }
 
   getTemplate() {
-    return createCardDetailsTemplate(this._card);
+    return createCardDetailsTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+      this._renderGenre(this._element);
+      this._renderComments(this._element);
+    }
+    return this._element;
+  }
+
+  _renderGenre(element) {
+    this._filmGenreTable = element.querySelector(`.film-details__table tbody`);
+    this._filmTableRows = this._filmGenreTable.querySelectorAll(`.film-details__row`);
+    this._filmGenreRow = this._filmTableRows[this._filmTableRows.length - 1];
+
+    this._data.genre.types.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new CardGenreView(genre), RenderPosition.BEFOREEND));
+  }
+
+  _renderComments(element) {
+    this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
+
+    this._data.comments.forEach((comment) => render(this._filmPopupCommentList, new CardCommentView(comment), RenderPosition.BEFOREEND));
+  }
+
+  _onCloseButtonClick(evt) {
+    evt.preventDefault();
+    this._callback.click();
+  }
+
+  setCloseClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseButtonClick);
+  }
+
+  _keyDownHandler(evt) {
+    evt.preventDefault();
+    this._callback.keydown(evt);
+  }
+
+  setKeydownHandler(callback) {
+    this._callback.keydown = callback;
+    document.addEventListener(`keydown`, this._keyDownHandler);
+  }
+
+  removeCloseHandlers() {
+    this._callback.click = null;
+    this.getElement().querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseButtonClick);
+    document.removeEventListener(`keydown`, this._keyDownHandler);
   }
 }
