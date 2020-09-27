@@ -5,6 +5,7 @@ import CardListExtraView from "../view/card-list-extra.js";
 import CardView from "../view/card.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import CardDetailView from "../view/card-detail.js";
+import NoDataView from "../view/no-data.js";
 import Abstract from "../view/abstract.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
@@ -29,6 +30,7 @@ export default class MovieList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._topRatedComponent = new CardListExtraView(ExtraTitle.TOP_RATED);
     this._mostCommentedComponent = new CardListExtraView(ExtraTitle.MOST_COMMENTED);
+    this._noDataComponent = new NoDataView();
 
     this._handlerShowMoreButtonClick = this._handlerShowMoreButtonClick.bind(this);
   }
@@ -37,11 +39,8 @@ export default class MovieList {
     this._cards = cards.slice();
 
     render(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
-    render(this._boardComponent, this._cardListComponent, RenderPosition.AFTERBEGIN);
-    render(this._cardListComponent, this._cardСontainerComponent, RenderPosition.BEFOREEND);
 
-    this._renderBoard();
-    this._renderExtraCardList();
+    this._renderMovies();
   }
 
   _renderCard(cardСontainer, card) {
@@ -105,6 +104,8 @@ export default class MovieList {
   }
 
   _renderBoard() {
+    render(this._boardComponent, this._cardListComponent, RenderPosition.AFTERBEGIN);
+    render(this._cardListComponent, this._cardСontainerComponent, RenderPosition.BEFOREEND);
     this._renderCardList();
   }
 
@@ -139,5 +140,20 @@ export default class MovieList {
     const commentedFilms = generateMostCommentedCards(this._cards);
 
     this._renderExtraCards(this._mostCommentedComponent.getContainerElement(), commentedFilms);
+  }
+
+  _renderNoData() {
+    render(this._boardComponent, this._noDataComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderMovies() {
+    const cardsLength = this._cards.length;
+    if (cardsLength <= 0) {
+      this._renderNoData();
+      return;
+    }
+
+    this._renderBoard();
+    this._renderExtraCardList();
   }
 }
