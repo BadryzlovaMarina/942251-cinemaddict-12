@@ -1,10 +1,11 @@
-import {getCommentDate, createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+import {humanizeCommentDate} from "../utils/card.js";
 
 const createCardCommentTemplate = (card) => {
   const {text, author, date, emoji} = card;
 
   const commentDate = date !== null
-    ? getCommentDate(date)
+    ? humanizeCommentDate(date)
     : ` `;
 
   return `<li class="film-details__comment">
@@ -22,21 +23,12 @@ const createCardCommentTemplate = (card) => {
 </li>`;
 };
 
-export default class CardComment {
+export default class CardComment extends AbstractView {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
   getTemplate() {
     return createCardCommentTemplate(this._card);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

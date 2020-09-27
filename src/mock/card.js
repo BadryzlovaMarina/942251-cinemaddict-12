@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomNumber, shuffleArray, getRandomItem, uniqueNumber} from "../utils.js";
+import {getRandomInteger, getRandomNumber, shuffleArray, getRandomItem, uniqueNumber} from "../utils/common.js";
 
 const MIN_RATING = 0;
 const MAX_RATING = 10;
