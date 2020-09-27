@@ -1,6 +1,5 @@
 import UserProfileView from "./view/user-profile.js";
 import FilterView from "./view/filter.js";
-import SortingView from "./view/sorting.js";
 import StatisticsView from "./view/statistics.js";
 import {generateCard} from "./mock/card.js";
 import MovieListPresenter from "./presenter/movie-list.js";
@@ -25,7 +24,6 @@ const statisticsElement = document.querySelector(`.footer__statistics`);
 
 render(siteHeaderElement, new UserProfileView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilterView(countFilters(cards)), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortingView(), RenderPosition.BEFOREEND);
 render(statisticsElement, new StatisticsView(cards), RenderPosition.BEFOREEND);
 
 new MovieListPresenter(siteMainElement).init(cards);
