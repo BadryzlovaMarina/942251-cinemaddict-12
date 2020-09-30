@@ -9,3 +9,5 @@ export const sortCardDate = (cardA, cardB) => {
 export const sortCardRating = (cardA, cardB) => {
   return cardB.rating - cardA.rating;
 };
+
+export const sortByComments = (a, b) => b.comments.length - a.comments.length;

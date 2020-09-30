@@ -1,4 +1,7 @@
-import {getRandomInteger, getRandomNumber, shuffleArray, getRandomItem, uniqueNumber} from "../utils/common.js";
+import {getRandomInteger, getRandomNumber, shuffleArray, getRandomItem} from "../utils/common.js";
+import {EMOJIES} from "../const.js";
+
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const MIN_RATING = 0;
 const MAX_RATING = 10;
@@ -21,7 +24,6 @@ const actors = [[`Erich von Stroheim`, `Mary Beth Hughes`, `Dan Duryea`, `Morgan
 const countries = [`USA`, `Germany`, `Russia`, `Austria`, `Spain`];
 const authors = [`Tim Macoveev`, `John Doe`, `Vlasta Lucina`, `Florianne Wigheard`, `Theudhar Puneet`, `Erol Sara`];
 const comments = [`Interesting setting and a good cast`, `Booooooooooring`, `Recommend`, `Don't recommend`, `A great movie`, `Liked a lot`, `Don't waste time`];
-const emojies = [`angry.png`, `puke.png`, `sleeping.png`, `smile.png`];
 
 const generateRating = () => {
   return getRandomNumber(MIN_RATING, MAX_RATING);
@@ -99,13 +101,11 @@ const generateCommentDate = () => {
 const generateComments = () => {
   return {
     text: getRandomItem(comments),
-    emoji: `./images/emoji/${getRandomItem(emojies)}`,
+    emoji: `./images/emoji/${getRandomItem(EMOJIES)}`,
     author: getRandomItem(authors),
     date: generateCommentDate()
   };
 };
-
-const getId = uniqueNumber();
 
 export const generateCard = () => {
   return {
@@ -124,6 +124,6 @@ export const generateCard = () => {
     actors: getRandomItem(actors),
     country: getRandomItem(countries),
     comments: groupComments(generateComments, getRandomInteger(MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT)),
-    id: getId(),
+    id: generateId(),
   };
 };
